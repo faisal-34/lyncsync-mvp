@@ -29,6 +29,20 @@ class IntentRequest(BaseModel):
     )
 
 
+@app.get("/")
+def root() -> dict:
+    return {
+        "name": "LyncSync MVP",
+        "status": "online",
+        "message": "Use /docs for the interactive API, /health for uptime, and POST /orchestrate to execute an intent.",
+        "endpoints": {
+            "docs": "/docs",
+            "health": "/health",
+            "orchestrate": "/orchestrate",
+        },
+    }
+
+
 @app.get("/health")
 def healthcheck() -> dict[str, str]:
     return {"status": "ok"}
