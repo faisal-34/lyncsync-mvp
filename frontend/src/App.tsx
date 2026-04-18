@@ -46,18 +46,21 @@ type ErrorResponse = {
 
 const statusCards = [
   {
-    title: "Intent Parsing",
-    description: "Map natural language into deterministic enterprise actions.",
+    title: "The Problem",
+    description:
+      "Fragmented ERP, CRM, and chat systems force managers to spend too much time moving data manually.",
     icon: Bot,
   },
   {
-    title: "Connector Routing",
-    description: "Coordinate workflows across CRM, messaging, and internal ops.",
+    title: "The Solution",
+    description:
+      "LyncSync turns plain-language business intent into coordinated API workflows across disconnected stacks.",
     icon: Workflow,
   },
   {
-    title: "Scalable UI Layer",
-    description: "A shadcn-style component surface with motion-ready primitives.",
+    title: "The Trend",
+    description:
+      "Flatter organizations and human-AI hybrid teams need orchestration systems that reduce coordination overhead.",
     icon: Layers3,
   },
 ];
@@ -115,33 +118,88 @@ export default function App() {
       <section className="mx-auto flex min-h-screen max-w-7xl flex-col gap-10 px-6 py-10 lg:px-8">
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-100">
-            LyncSync UI integration
+            AI orchestration for legacy enterprise systems
           </div>
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-3">
               <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
-                Spline scene integrated into a shadcn-style React surface.
+                Turn fragmented enterprise systems into one intelligent workflow.
               </h1>
               <p className="text-lg text-muted-foreground">
-                The frontend now supports TypeScript, Tailwind CSS, path aliases,
-                and reusable UI primitives under <code>src/components/ui</code>.
+                LyncSync is a cross-platform AI agent that understands business
+                intent in plain language and executes multi-step workflows
+                across legacy tools like ERP, CRM, and team chat.
               </p>
             </div>
-            <a
-              href="https://lyncsync-mvp.vercel.app/docs"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
-            >
-              Open backend docs
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#live-demo"
+                className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-3 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
+              >
+                See how it works
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href="https://lyncsync-mvp.vercel.app/docs"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+              >
+                Open backend docs
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
 
         <SplineSceneBasic />
 
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <section className="grid gap-4 lg:grid-cols-3">
+          <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/80">
+              Problem
+            </p>
+            <h2 className="mt-3 text-2xl font-medium text-white">
+              Data silos consume management time.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Legacy systems create fragmented workflows where middle management
+              spends up to half the week transferring context between tools.
+            </p>
+          </article>
+
+          <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/80">
+              Solution
+            </p>
+            <h2 className="mt-3 text-2xl font-medium text-white">
+              One intent, many coordinated actions.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Users describe the outcome they want, and LyncSync interprets,
+              routes, and executes the required API workflow across disconnected
+              enterprise systems.
+            </p>
+          </article>
+
+          <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/80">
+              Market Trend
+            </p>
+            <h2 className="mt-3 text-2xl font-medium text-white">
+              Human-AI teams need orchestration layers.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Flatter organizations need fewer people to coordinate more work,
+              making AI workflow orchestration a core operational capability.
+            </p>
+          </article>
+        </section>
+
+        <div
+          id="live-demo"
+          className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]"
+        >
           <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-full border border-cyan-400/20 bg-cyan-400/10 p-2 text-cyan-200">
