@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from typing import Any, Dict, List, Literal
 
 from pydantic import BaseModel, Field
@@ -71,6 +72,44 @@ class GeminiIntentAgent:
 
         raise ValueError("Gemini did not return a function call for the provided intent.")
 
+    def _extract_client_name(self, user_intent: str, data: Dict[str, Any]) -> str | None:
+        candidate = data.get("client_name") or data.get("name") or data.get("client")
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+
+        match = re.search(
+            r"onboard(?:ing)?\s+(?:a\s+)?new client named\s+(.+)$",
+            user_intent.strip(),
+            flags=re.IGNORECASE,
+        )
+        if match:
+            return match.group(1).strip().rstrip(".")
+
+        return None
+
+    def _normalize_parsed_intent(
+        self, parsed: ParsedIntent, user_intent: str
+    ) -> ParsedIntent:
+        normalized_task = parsed.task.strip().lower().replace(" ", "_")
+        normalized_platform = parsed.target_platform.strip() or "unmapped"
+        normalized_data = dict(parsed.data)
+        normalized_data.setdefault("raw_intent", user_intent)
+
+        client_name = self._extract_client_name(user_intent, normalized_data)
+        if client_name:
+            normalized_data["client_name"] = client_name
+
+        if normalized_task in {"onboard_client", "onboard_new_client"} and client_name:
+            normalized_data.setdefault("requested_action", "onboard_new_client")
+            normalized_task = "onboard_client"
+            normalized_platform = "crm_and_team_ops"
+
+        return ParsedIntent(
+            task=normalized_task or "unknown",
+            target_platform=normalized_platform,
+            data=normalized_data,
+        )
+
     def parse_intent(self, user_intent: str) -> ParsedIntent:
         logger.info("Parsing user intent: %s", user_intent)
 
@@ -137,6 +176,7 @@ class GeminiIntentAgent:
             )
 
         parsed = ParsedIntent.model_validate(function_call.args)
+        parsed = self._normalize_parsed_intent(parsed, user_intent)
         logger.info("Parsed Gemini intent: %s", parsed.model_dump_json())
         return parsed
 
@@ -144,7 +184,10 @@ class GeminiIntentAgent:
         logger.info("Building execution plan for task: %s", parsed_intent.task)
 
         if parsed_intent.task == "onboard_client":
-            client_name = parsed_intent.data["client_name"]
+            client_name = parsed_intent.data.get("client_name")
+            if not isinstance(client_name, str) or not client_name.strip():
+                logger.warning("Parsed onboarding intent is missing client_name.")
+                return []
             return [
                 ExecutionStep(tool="update_crm", payload=parsed_intent.data),
                 ExecutionStep(
